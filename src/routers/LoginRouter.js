@@ -11,12 +11,19 @@ router.post('/register', async (req, res) => {
 
   try {
     // Procurar o usuário pelo email no banco de dados
-    const existingUser = await UserModel.findOne({ email: UserData.email });
+    const existingEmailUser = await UserModel.findOne({email: UserData.email});
+    const existingPasswordUser = await UserModel.findOne({name: UserData.name});
 
-    if (existingUser) {
+    if (existingEmailUser) {
       // Se o email já existe no banco de dados, retorne um erro informando que o usuário já está registrado
-      return res.status(409).send('O email já está registrado');
-    }else {
+      return res.status(409).send('Email já está em uso');
+    }
+    
+    if(existingPasswordUser){
+      return res.status(409).send('Senha já está em uso');
+    }  
+    
+    else {
       // Se o email não existe, crie o novo usuário
       const newUser = await UserModel.create(UserData);
       res.send(newUser);
