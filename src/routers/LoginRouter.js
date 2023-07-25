@@ -24,7 +24,7 @@ router.post('/register', async (req, res) => {
     }  
     
     else {
-      // Se o email não existe, crie o novo usuário
+      // Se o email ou senha não existe, crie o novo usuário
       const newUser = await UserModel.create(UserData);
       res.send(newUser);
     }
